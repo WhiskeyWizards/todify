@@ -1,0 +1,27 @@
+name: Add Jira link to PR
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  add-jira-link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Add Jira link to PR description
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_TITLE=$(jq -r .pull_request.title $GITHUB_EVENT_PATH)
+          ISSUE_KEY=$(echo $PR_TITLE | grep -oE 'TODO-[0-9]+')
+          if [ -n "$ISSUE_KEY" ]; then
+            JIRA_URL="https://ankush2001garg.atlassian.net/browse/$ISSUE_KEY"
+            PR_BODY=$(jq -r .pull_request.body $GITHUB_EVENT_PATH)
+            NEW_BODY="$PR_BODY\n\n### Issue\nResolves [$ISSUE_KEY]($JIRA_URL)"
+            curl -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
+                 -d "{\"body\": \"$NEW_BODY\"}" \
+                 "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$GITHUB_ISSUE_NUMBER"
+          fi
