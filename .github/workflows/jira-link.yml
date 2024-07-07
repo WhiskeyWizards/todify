@@ -1,27 +1,38 @@
-name: Add Jira link to PR
+name: Autolink Jira Tickets
 
 on:
   pull_request:
     types: [opened, edited]
 
 jobs:
-  add-jira-link:
+  autolink-jira-tickets:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Add Jira link to PR description
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Parse Jira Tickets
         run: |
+          # Example script to parse Jira tickets from PR title and update description
           PR_TITLE=$(jq -r .pull_request.title $GITHUB_EVENT_PATH)
-          ISSUE_KEY=$(echo $PR_TITLE | grep -oE 'TODO-[0-9]+')
-          if [ -n "$ISSUE_KEY" ]; then
-            JIRA_URL="https://ankush2001garg.atlassian.net/browse/$ISSUE_KEY"
-            PR_BODY=$(jq -r .pull_request.body $GITHUB_EVENT_PATH)
-            NEW_BODY="$PR_BODY\n\n### Issue\nResolves [$ISSUE_KEY]($JIRA_URL)"
-            curl -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
-                 -d "{\"body\": \"$NEW_BODY\"}" \
-                 "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$GITHUB_ISSUE_NUMBER"
-          fi
+          JIRA_TICKETS=$(echo $PR_TITLE | grep -o '[A-Z][A-Z0-9]*-[0-9]\+')
+          DESCRIPTION="### Jira Tickets\n"
+          
+          for ticket in $JIRA_TICKETS; do
+            DESCRIPTION+="[JIRA-$ticket](https://ankush2001garg.atlassian.net/browse/JIRA-$ticket)\n"
+          done
+
+          echo "::set-output name=description::$DESCRIPTION"
+
+      - name: Update Pull Request Description
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const description = `$(echo $DESCRIPTION)`;
+            github.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: description
+            });
