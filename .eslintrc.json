@@ -1,3 +1,17 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "semi": "error",
+    "prefer-const": "error",
+    "no-nested-ternary": "error",
+    "no-else-return": "error",
+    "no-duplicate-imports": "error",
+    "camelcase": [
+      "error",
+      {
+        "properties": "never"
+      }
+    ],
+    "arrow-body-style": ["error", "as-needed"]
+  }
 }
