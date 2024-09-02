@@ -16,7 +16,9 @@
       "styles/*": ["./src/styles/*"],
       "modules/*": ["./src/modules/*"],
       "pages/*": ["./src/pages/*"],
-      "core/*": ["./src/core/*"]
+      "core/*": ["./src/core/*"],
+      "components/*": ["./src/components/*"],
+      "general/*": ["./src/general/*"]
     },
     "plugins": [
       {
