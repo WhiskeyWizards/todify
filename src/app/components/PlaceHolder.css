@@ -1,0 +1,49 @@
+
+.placeHolder {
+    height: 58px;
+}
+.placeHolder-content {
+    display: flex;
+    align-items: center;
+    margin: 12px;
+    padding-bottom: 5px;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+.user {
+    display: flex;
+    align-items: center;
+    /* margin-left: 3px; */
+    padding: 6px 6px 6px 0px;
+    border-radius: 4px;
+    gap:4px;
+}
+.user:hover {
+    background-color: #b1aeae;
+}
+.avtar {
+    margin: 0px 6px;
+    width: 30px;
+}
+.username {
+    width: 72px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+}
+.notif-sidebar {
+    display: flex;
+    width: 74px;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.notif-sidebar button {
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.notif-sidebar button:hover {
+    background-color: #b1aeae;
+}

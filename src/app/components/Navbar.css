@@ -1,0 +1,13 @@
+.app-sidebar-container {
+    height: 100vh;
+    width: 330px;
+    background-color: #f1f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.action-space {
+    display: flex;
+    flex-direction: column;
+}
