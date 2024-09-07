@@ -1,3 +1,9 @@
-import { Home } from 'core/components/Home';
+// Libraries
+import { redirect } from 'next/navigation';
 
-export default Home;
+const LandingPage = (): JSX.Element | null => {
+  redirect('/app/today');
+  return null;
+};
+
+export default LandingPage;

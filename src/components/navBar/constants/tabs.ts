@@ -1,0 +1,6 @@
+export enum TabType {
+  INBOX = 'INBOX',
+  TODAY = 'TODAY',
+  UPCOMING = 'UPCpMING',
+  FILTER_AND_LABELS = 'FILTER_AND_LABELS',
+}
