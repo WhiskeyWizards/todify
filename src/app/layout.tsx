@@ -1,32 +1,30 @@
-import '../styles/globals.css';
+import type { Metadata } from "next";
+import "./globals.css";
+import { Open_Sans } from 'next/font/google';
+import { Provider } from "./provider";
 
-// Providers
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-
-// Types
-import type { ReactNode } from 'react';
-import type { Metadata } from 'next';
-
-// Theme
-import { TODIFY_THEME } from '../theme/mantineTheme';
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s | todify',
-    default: 'todify',
-  },
-  description: 'Full-stack project',
+  title: "todify",
+  description: "Full-stack project",
 };
 
-const RootLayout = ({ children }: { children: ReactNode }): JSX.Element => (
-  <html lang="en">
-    <head>
-      <ColorSchemeScript />
-    </head>
-    <body>
-      <MantineProvider theme={TODIFY_THEME}>{children}</MantineProvider>
-    </body>
-  </html>
-);
-
-export default RootLayout;
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <Provider>
+        <body className={openSans.className}>
+          {children}
+        </body>
+      </Provider>
+    </html>
+  );
+}
